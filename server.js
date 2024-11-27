@@ -21,22 +21,7 @@ const mongoStore = MongoStore.create({
   collectionName: "sessions", // Optional: Customize session collection name
 });
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: mongoStore, // Use MongoDB store
-    cookie: {
-      secure: process.env.NODE_ENV !== "development", // Set to `true` if using HTTPS
-      httpOnly: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 day
-      sameSite: "None",
-    },
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 // Middleware
 app.set('trust proxy',1)
@@ -59,7 +44,22 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Connect to MongoDB
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: mongoStore, // Use MongoDB store
+    cookie: {
+      secure: process.env.NODE_ENV !== "development", // Set to `true` if using HTTPS
+      httpOnly: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 day
+      sameSite: "None",
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 app.use("/api/auth", authRoutes);
