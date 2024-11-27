@@ -31,7 +31,7 @@ app.use(
       secure: process.env.NODE_ENV !== "development", // Set to `true` if using HTTPS
       httpOnly: false,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 day
-      // sameSite: "None",
+      sameSite: "None",
     },
   })
 );
