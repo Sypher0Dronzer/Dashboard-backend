@@ -39,12 +39,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware
+app.set('trust proxy',1)
 app.use(cors({
-  // origin: [process.env.FRONTEND_LINK],
-  origin: ['http://localhost:5173','http://192.168.137.1:5173'],
+  origin: [process.env.FRONTEND_LINK],
+  // origin: ['http://localhost:5173','http://192.168.137.1:5173'],
   methods:["POST","GET","DELETE"],
   credentials: true,
 }));
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://theme-chat.netlify.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET, POST");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
